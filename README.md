@@ -15,11 +15,11 @@
    - **Página de Detalhes da Vaga:** Ao clicar em uma vaga, o usuário deve ser redirecionado para uma página com mais informações.
    - **Filtro por Categoria:** Permitir a filtragem de vagas por categoria (ex: Frontend, Backend, Full Stack).
    - **Design Responsivo:** Deve funcionar bem tanto em dispositivos móveis quanto em desktops.
-   - **Favoritos:** Permitir que os usuários possam "favoritar" vagas e armazená-las em um banco de dados.
+   - **Favoritos:** Desenvolva uma funcionalidade para que os usuários possam "favoritar" vagas. Essas vagas favoritas devem ser armazenadas em um banco de dados e persistir mesmo após o usuário atualizar a página ou fechar o navegador.
 
 3. **Integração com API:**
 
-- Utilizar a **[API do Remotive](https://remotive.io/api-documentation)** (API pública de listagem de empregos), para alimentar sua propria API que seve ser utilizada pela consulta do front-end.
+- Utilizar a **[API do Remotive](https://remotive.io/api-documentation)** (API pública de listagem de empregos). No entanto, é obrigatório que você crie sua própria API de backend para consumir os dados do Remotive e, então, o seu frontend consuma essa API intermediária. Isso simula um ambiente de produção real e permite avaliar suas habilidades em construir um backend.
 
 4.**Banco de dados:**
 
