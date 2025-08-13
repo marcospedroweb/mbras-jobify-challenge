@@ -59,10 +59,17 @@
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-[#151F2B];
   }
 }
+
+body {
+  font-family: var(--font-roboto), sans-serif;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-montserrat), sans-serif;
+}
+
