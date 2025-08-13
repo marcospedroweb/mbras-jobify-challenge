@@ -1,90 +1,105 @@
-# Jobify: Desafio - Painel de Vagas de Emprego
+<a href="https://demo-nextjs-with-supabase.vercel.app/">
+  <img alt="Next.js and Supabase Starter Kit - the fastest way to build apps with Next.js and Supabase" src="https://demo-nextjs-with-supabase.vercel.app/opengraph-image.png">
+  <h1 align="center">Next.js and Supabase Starter Kit</h1>
+</a>
 
-**Objetivo:** Construir um aplicativo de listagem de vagas onde os usuários possam navegar pelas oportunidades, filtrar por categoria e visualizar detalhes.
+<p align="center">
+ The fastest way to build apps with Next.js and Supabase
+</p>
 
-## Requisitos
+<p align="center">
+  <a href="#features"><strong>Features</strong></a> ·
+  <a href="#demo"><strong>Demo</strong></a> ·
+  <a href="#deploy-to-vercel"><strong>Deploy to Vercel</strong></a> ·
+  <a href="#clone-and-run-locally"><strong>Clone and run locally</strong></a> ·
+  <a href="#feedback-and-issues"><strong>Feedback and issues</strong></a>
+  <a href="#more-supabase-examples"><strong>More Examples</strong></a>
+</p>
+<br/>
 
-1. **Stack:**
+## Features
 
-   - Next.js (React, TypeScript)
-   - **ShadCN** e **TailwindCSS** (Recomendado para UI, pois são usados na empresa)
+- Works across the entire [Next.js](https://nextjs.org) stack
+  - App Router
+  - Pages Router
+  - Middleware
+  - Client
+  - Server
+  - It just works!
+- supabase-ssr. A package to configure Supabase Auth to use cookies
+- Password-based authentication block installed via the [Supabase UI Library](https://supabase.com/ui/docs/nextjs/password-based-auth)
+- Styling with [Tailwind CSS](https://tailwindcss.com)
+- Components with [shadcn/ui](https://ui.shadcn.com/)
+- Optional deployment with [Supabase Vercel Integration and Vercel deploy](#deploy-your-own)
+  - Environment variables automatically assigned to Vercel project
 
-2. **Funcionalidades:**
+## Demo
 
-   - **Página de Listagem de Vagas:** Buscar e exibir uma lista de vagas de emprego a partir de uma API.
-   - **Página de Detalhes da Vaga:** Ao clicar em uma vaga, o usuário deve ser redirecionado para uma página com mais informações.
-   - **Filtro por Categoria:** Permitir a filtragem de vagas por categoria (ex: Frontend, Backend, Full Stack).
-   - **Design Responsivo:** Deve funcionar bem tanto em dispositivos móveis quanto em desktops.
-   - **Favoritos:** Desenvolva uma funcionalidade para que os usuários possam "favoritar" vagas. Essas vagas favoritas devem ser armazenadas em um banco de dados e persistir mesmo após o usuário atualizar a página ou fechar o navegador.
+You can view a fully working demo at [demo-nextjs-with-supabase.vercel.app](https://demo-nextjs-with-supabase.vercel.app/).
 
-3. **Integração com API:**
+## Deploy to Vercel
 
-- Utilizar a **[API do Remotive](https://remotive.io/api-documentation)** (API pública de listagem de empregos). No entanto, é obrigatório que você crie sua própria API de backend para consumir os dados do Remotive e, então, o seu frontend consuma essa API intermediária. Isso simula um ambiente de produção real e permite avaliar suas habilidades em construir um backend.
+Vercel deployment will guide you through creating a Supabase account and project.
 
-4.**Banco de dados:**
+After installation of the Supabase integration, all relevant environment variables will be assigned to the project so the deployment is fully functioning.
 
-- **Banco Relacional Preferido:** **Supabase** (Banco PostgreSQL gratuito + autenticação)
-- **Banco NoSQL (Alternativa):** **Firebase Firestore** (Banco NoSQL gratuito)
-- O usuário deve conseguir visualizar suas vagas salvas mesmo após atualizar a página.
-- **Preferência:** Embora ambos os bancos (relacional e NoSQL) sejam válidos, **bancos relacionais** são preferenciais para este desafio, pois se alinham mais com a estrutura que usamos na empresa.
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&project-name=nextjs-with-supabase&repository-name=nextjs-with-supabase&demo-title=nextjs-with-supabase&demo-description=This+starter+configures+Supabase+Auth+to+use+cookies%2C+making+the+user%27s+session+available+throughout+the+entire+Next.js+app+-+Client+Components%2C+Server+Components%2C+Route+Handlers%2C+Server+Actions+and+Middleware.&demo-url=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2F&external-id=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&demo-image=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2Fopengraph-image.png)
 
-**Desafio Adicional (Opcional):**
+The above will also clone the Starter kit to your GitHub, you can clone that locally and develop locally.
 
-- **Utilizar Docker** para subir **tudo junto**. Crie um **Docker Compose** para subir o site, a API e o banco de dados. Recomendamos uma estrutura de pastas como:
+If you wish to just develop locally and not deploy to Vercel, [follow the steps below](#clone-and-run-locally).
 
-```bash
-      .
-      ├── frontend
-      │   ├── public
-      ├── backend
-      │   ├── src
-      └── database
-         └── migrations
-```
+## Clone and run locally
 
-Você pode organizar da maneira que preferir, desde que mantenha tudo no mesmo repositório. Se decidir usar um banco local, o desafio será maior, pois você precisará configurar o banco de dados localmente dentro do Docker.
+1. You'll first need a Supabase project which can be made [via the Supabase dashboard](https://database.new)
 
-## Fluxo de Fork e Pull Request (PR)
+2. Create a Next.js app using the Supabase Starter template npx command
 
-Para realizar este teste, o processo será feito diretamente em um repositório público no GitHub. O fluxo a ser seguido é o seguinte:
+   ```bash
+   npx create-next-app --example with-supabase with-supabase-app
+   ```
 
-1. **Fork do Repositório:**
+   ```bash
+   yarn create next-app --example with-supabase with-supabase-app
+   ```
 
-   - Acesse o repositório público do teste (será fornecido o link).
-   - Faça um **fork** do repositório para sua conta do GitHub. Isso cria uma cópia do repositório em seu perfil, onde você poderá trabalhar nas modificações.
+   ```bash
+   pnpm create next-app --example with-supabase with-supabase-app
+   ```
 
-2.**Clone o Repositório para seu Ambiente Local:**
+3. Use `cd` to change into the app's directory
 
-- Após fazer o fork, **clone o repositório** para o seu ambiente de desenvolvimento local usando o comando:
+   ```bash
+   cd with-supabase-app
+   ```
 
-```bash
-     git clone https://github.com/seu-usuario/mbras-jobify-challenge.git
- ```
+4. Rename `.env.example` to `.env.local` and update the following:
 
-3.**Desenvolvimento:**
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=[INSERT SUPABASE PROJECT URL]
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=[INSERT SUPABASE PROJECT API ANON KEY]
+   ```
 
-- Siga as instruções do repositório (caso existam) ou desenvolva a solução conforme os requisitos descritos.
-- Faça commits frequentes no seu repositório para garantir que o progresso está sendo salvo.
+   Both `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` can be found in [your Supabase project's API settings](https://supabase.com/dashboard/project/_?showConnect=true)
 
-4.**Criação do Pull Request (PR):**
+5. You can now run the Next.js local development server:
 
-- Quando terminar o desenvolvimento, faça o push das alterações para o seu repositório remoto.
-- Abra um **Pull Request (PR)** no repositório original. No PR, descreva as funcionalidades implementadas e qualquer detalhe relevante.
-- Nosso time irá revisar o PR, focando nas soluções e habilidades que você utilizou para resolver os desafios.
+   ```bash
+   npm run dev
+   ```
 
-5.**Feedback:**
--Após a análise, você receberá feedback sobre a entrega, baseado nas boas práticas e no uso das tecnologias recomendadas.
+   The starter kit should now be running on [localhost:3000](http://localhost:3000/).
 
-## Importante
+6. This template comes with the default shadcn/ui style initialized. If you instead want other ui.shadcn styles, delete `components.json` and [re-install shadcn/ui](https://ui.shadcn.com/docs/installation/next)
 
-**Se você achar que não tem tempo suficiente, não se preocupe com os desafios opcionais.** Foque na entrega do que for mais importante, e não se importe se não conseguir implementar tudo. A avaliação será baseada **nas habilidades e soluções que você utilizou** para criar a funcionalidade que conseguiu implementar.
+> Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
 
-## Critérios de Avaliação
+## Feedback and issues
 
-✅ Estrutura e boas práticas de código  
-✅ Integração com API e manipulação de dados  
-✅ Conhecimento em Next.js & React (Rotas, Hooks, etc.)  
-✅ **Cuidado com o design e UI do aplicativo** (Uso adequado de ShadCN e Tailwind, layout organizado)  
-✅ Responsividade  
-✅ (Bônus) Integração com banco de dados e operações CRUD  
-✅ (Desafio Adicional) Uso de Docker Compose para criar e gerenciar o site, a API e o banco de dados local
+Please file feedback and issues over on the [Supabase GitHub org](https://github.com/supabase/supabase/issues/new/choose).
+
+## More Supabase examples
+
+- [Next.js Subscription Payments Starter](https://github.com/vercel/nextjs-subscription-payments)
+- [Cookie-based Auth and the Next.js 13 App Router (free course)](https://youtube.com/playlist?list=PL5S4mPUpp4OtMhpnp93EFSo42iQ40XjbF)
+- [Supabase Auth and the Next.js App Router](https://github.com/supabase/supabase/tree/master/examples/auth/nextjs)
