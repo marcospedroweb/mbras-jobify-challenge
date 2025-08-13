@@ -1,22 +1,32 @@
-import type { Metadata } from "next";
-import { Geist } from "next/font/google";
-import { ThemeProvider } from "next-themes";
-import "./globals.css";
+import type { Metadata } from 'next';
+import { Montserrat, Roboto } from 'next/font/google';
+import { ThemeProvider } from 'next-themes';
+import './globals.css';
+import { EnvVarWarning } from '@/components/env-var-warning';
+import { AuthButton } from '@/components/auth-button';
+import Link from 'next/link';
+import { hasEnvVars } from '@/lib/utils';
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
+  : 'http://localhost:3000';
 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Next.js and Supabase Starter Kit",
-  description: "The fastest way to build apps with Next.js and Supabase",
+  title: 'Jobify',
+  description: 'Busque sua vaga aqui',
 };
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  display: "swap",
-  subsets: ["latin"],
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800', '900'], // todos os pesos
+  variable: '--font-montserrat', // opcional, para usar com CSS var
+});
+
+const roboto = Roboto({
+  subsets: ['latin'],
+  weight: ['400', '500', '700', '900'],
+  variable: '--font-roboto',
 });
 
 export default function RootLayout({
@@ -25,14 +35,28 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.className} antialiased`}>
+    <html lang="pt-BR" suppressHydrationWarning>
+      <body
+        className={`${montserrat.variable} ${roboto.variable} antialiased h-[calc(100vh-64px)]`}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
+          <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
+            <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
+              <div className="flex gap-5 items-center font-semibold">
+                <h1>
+                  <Link href={'/'} className="text-[40px]">
+                    Jobify
+                  </Link>
+                </h1>
+              </div>
+              {!hasEnvVars ? <EnvVarWarning /> : <AuthButton />}
+            </div>
+          </nav>
           {children}
         </ThemeProvider>
       </body>
