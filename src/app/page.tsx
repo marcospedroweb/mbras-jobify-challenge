@@ -1,16 +1,22 @@
 'use client';
-import { Button } from '@/src/components/ui/button';
-import { Input } from '@/src/components/ui/input';
-import { Search } from 'lucide-react';
 import { useState } from 'react';
 import { InputSearch } from '../components/custom/InputSearch';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const [search, setSearch] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+  const router = useRouter();
+
+  const searchJob = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    setIsLoading(!isLoading);
+    router.push(`${appUrl}/jobs?search=${search}`);
+  };
 
   return (
-    <main className="flex flex-col items-center justify-center h-full">
+    <main className="flex flex-col items-center justify-center h-full mt-[-64px]">
       <div className="w-full flex flex-col gap-14 items-center text-center max-w-[1155px]">
         <div>
           <h2 className="text-[40px] font-bold mb-4">
@@ -23,7 +29,12 @@ export default function Home() {
         </div>
         <div className="w-full">
           <div className="flex justify-center w-full">
-            <InputSearch search={search} setSearch={setSearch} />
+            <InputSearch
+              search={search}
+              setSearch={setSearch}
+              onSearch={searchJob}
+              isLoading={isLoading}
+            />
           </div>
         </div>
       </div>
