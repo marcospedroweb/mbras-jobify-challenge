@@ -7,6 +7,8 @@ import { LabelButton } from '@/src/components/custom/LabelButton';
 import JobCard from '@/src/components/custom/JobCard';
 import JobCardSkeleton from '@/src/components/custom/JobCardSkeleton';
 
+import JobsPagination from '@/src/components/custom/JobsPagination';
+
 interface JobsPageProps {
   searchParams?: {
     search?: string;
@@ -22,12 +24,25 @@ export default function JobsPage({ searchParams }: JobsPageProps) {
     search = '',
     company_name = '',
     category = '',
-    limit = 10,
+    limit = 15,
   } = searchParams || {};
+
+  const itemsPerPage = 5;
+  const [actualPage, setActualPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(0);
+
   const [jobs, setJobs] = useState<Job[]>([]);
   const [searchValue, setSearchValue] = useState<string>(search || '');
   const [categoryValue, setCategoryValue] = useState<string>(category || '');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // const [paginatedJobs, setPaginatedJobs] = useState<Job[]>([]);
+  // const [startIndex, setStartIndex] = useState<number>(
+  //   (actualPage - 1) * itemsPerPage,
+  // );
+
+  const startIndex = (actualPage - 1) * itemsPerPage;
+  const paginatedJobs = jobs.slice(startIndex, startIndex + itemsPerPage);
 
   const getJobs = async () => {
     setIsLoading(true);
@@ -36,11 +51,14 @@ export default function JobsPage({ searchParams }: JobsPageProps) {
       const response = await fetch(
         `${appUrl}/api/jobs?search=${searchValue}&company_name=${company_name}&category=${categoryValue}&limit=${limit}`,
       );
-      console.log(
-        `search=${search}&company_name=${company_name}&category=${category}&limit=${limit}`,
-      );
+
       const data = await response.json();
-      setJobs(data.jobs);
+      const jobsData = data.jobs;
+      console.log(jobsData);
+      setJobs(jobsData);
+      setTotalPages(Math.ceil(jobsData.length / itemsPerPage));
+      setActualPage(1);
+      // setPaginatedJobs(jobsData.slice(startIndex, startIndex + itemsPerPage));
     } catch (error) {
       console.log(error);
     } finally {
@@ -162,15 +180,31 @@ export default function JobsPage({ searchParams }: JobsPageProps) {
           </div> */}
         </div>
         <div className="col-span-7 h-full">
+          {!isLoading && (
+            <div className="text-end">
+              <span className="text-sm font-medium mb-2">
+                {jobs.length} resultados
+              </span>
+            </div>
+          )}
           {isLoading ? (
             Array.from({ length: 4 }).map((_, i) => <JobCardSkeleton key={i} />)
           ) : jobs.length ? (
-            jobs.map((job) => <JobCard key={job.id} job={job} />)
+            paginatedJobs.map((job) => <JobCard key={job.id} job={job} />)
           ) : (
             <div className="h-full flex justify-center items-center">
               <h2 className="text-center">
                 Nenhuma vaga foi encontrada com essas opções
               </h2>
+            </div>
+          )}
+          {totalPages > 1 && (
+            <div className="mt-6">
+              <JobsPagination
+                actualPage={actualPage}
+                setActualPage={setActualPage}
+                totalPages={totalPages}
+              />
             </div>
           )}
         </div>

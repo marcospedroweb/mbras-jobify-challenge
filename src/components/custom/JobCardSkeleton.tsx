@@ -3,7 +3,7 @@ import { Skeleton } from '../ui/skeleton';
 
 export default function JobCardSkeleton() {
   return (
-    <div className="bg-[#2D3D50] border border-[#6C7E94] rounded-lg w-full p-6 flex justify-between items-start gap-4">
+    <div className="bg-[#2D3D50] border border-[#6C7E94] rounded-lg w-full p-6 flex justify-between items-start gap-4 mb-3">
       <Skeleton className="h-[120px] w-[120px] rounded min-w-[120px]" />
 
       <div className="flex flex-col justify-start items-start gap-3 flex-grow">
