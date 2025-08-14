@@ -8,24 +8,16 @@ import JobCard from '@/src/components/custom/JobCard';
 import JobCardSkeleton from '@/src/components/custom/JobCardSkeleton';
 
 import JobsPagination from '@/src/components/custom/JobsPagination';
+import { useSearchParams } from 'next/navigation';
 
-interface JobsPageProps {
-  searchParams?: {
-    search?: string;
-    company_name?: string;
-    category?: string;
-    limit?: string;
-  };
-}
-
-export default function JobsPage({ searchParams }: JobsPageProps) {
+export default function JobsPage() {
   const appUrl = process.env.NEXT_PUBLIC_APP_URL;
-  const {
-    search = '',
-    company_name = '',
-    category = '',
-    limit = 15,
-  } = searchParams || {};
+  const searchParams = useSearchParams();
+
+  const category = searchParams.get('category') ?? '';
+  const company_name = searchParams.get('company_name') ?? '';
+  const search = searchParams.get('search') ?? '';
+  const limit = searchParams.get('limit') ?? 15;
 
   const itemsPerPage = 5;
   const [actualPage, setActualPage] = useState<number>(1);
@@ -35,11 +27,6 @@ export default function JobsPage({ searchParams }: JobsPageProps) {
   const [searchValue, setSearchValue] = useState<string>(search || '');
   const [categoryValue, setCategoryValue] = useState<string>(category || '');
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  // const [paginatedJobs, setPaginatedJobs] = useState<Job[]>([]);
-  // const [startIndex, setStartIndex] = useState<number>(
-  //   (actualPage - 1) * itemsPerPage,
-  // );
 
   const startIndex = (actualPage - 1) * itemsPerPage;
   const paginatedJobs = jobs.slice(startIndex, startIndex + itemsPerPage);
