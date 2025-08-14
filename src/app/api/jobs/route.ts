@@ -10,6 +10,21 @@ interface JobParams {
   };
 }
 
+export interface Job {
+  id: number;
+  url: string;
+  title: string;
+  company_name: string;
+  company_logo: string;
+  company_logo_url?: string;
+  category: string;
+  tags: string[];
+  job_type: string;
+  publication_date: string;
+  candidate_required_location: string;
+  salary?: string;
+  description: string;
+}
 export async function GET(req: Request, { params }: JobParams = {}) {
   const url = new URL(req.url);
 
@@ -31,4 +46,33 @@ export async function GET(req: Request, { params }: JobParams = {}) {
   const data = await res.json();
 
   return NextResponse.json(data);
+}
+
+export async function POST(req: Request) {
+  const supabase = await createClient();
+  const { job_id, company_name, title, category } = await req.json();
+
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+
+  if (userError || !user) {
+    return NextResponse.json(
+      { error: userError?.message },
+      { status: userError?.status },
+    );
+  }
+
+  const { data, error } = await supabase
+    .from('jobs')
+    .insert({ id: job_id, company_name, category, title })
+    .select()
+    .select();
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+
+  return NextResponse.json({ success: true, job: data[0] }, { status: 200 });
 }
