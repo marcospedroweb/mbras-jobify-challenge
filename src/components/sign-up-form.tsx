@@ -58,10 +58,9 @@ export function SignUpForm({
 
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
-      <Card>
+      <Card className="bg-[#2D3D50]">
         <CardHeader>
-          <CardTitle className="text-2xl">Sign up</CardTitle>
-          <CardDescription>Create a new account</CardDescription>
+          <CardTitle className="text-2xl">Criando conta</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSignUp}>
@@ -102,7 +101,11 @@ export function SignUpForm({
                 />
               </div>
               {error && <p className="text-sm text-red-500">{error}</p>}
-              <Button type="submit" className="w-full" disabled={isLoading}>
+              <Button
+                type="submit"
+                className="w-full bg-[#FE8A00]  hover:bg-[#CE7000] text-white"
+                disabled={isLoading}
+              >
                 {isLoading ? 'Creating an account...' : 'Sign up'}
               </Button>
             </div>
