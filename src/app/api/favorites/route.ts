@@ -1,12 +1,9 @@
-import { createClient } from '@/lib/supabase/client';
+import { createClient } from '@/src/lib/supabase/client';
 import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
   const supabase = await createClient();
-  const data = await req.json();
-  console.log(data);
-
-  return NextResponse.json({ error: 'Não autenticado' }, { status: 200 });
+  const { job_id } = await req.json();
 
   const {
     data: { user },
@@ -14,16 +11,19 @@ export async function POST(req: Request) {
   } = await supabase.auth.getUser();
 
   if (userError || !user) {
-    return NextResponse.json({ error: 'Não autenticado' }, { status: 401 });
+    return NextResponse.json(
+      { error: userError?.message },
+      { status: userError?.status },
+    );
   }
 
   const { error } = await supabase
     .from('favorites')
-    .insert({ title, url, user_id: user.id });
+    .insert({ user_id: user.id, job_id });
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
 
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ success: true }, { status: 200 });
 }

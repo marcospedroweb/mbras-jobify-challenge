@@ -2,10 +2,10 @@ import type { Metadata } from 'next';
 import { Montserrat, Roboto } from 'next/font/google';
 import { ThemeProvider } from 'next-themes';
 import './globals.css';
-import { EnvVarWarning } from '@/components/env-var-warning';
-import { AuthButton } from '@/components/auth-button';
+import { EnvVarWarning } from '@/src/components/env-var-warning';
+import { AuthButton } from '@/src/components/auth-button';
 import Link from 'next/link';
-import { hasEnvVars } from '@/lib/utils';
+import { hasEnvVars } from '@/src/lib/utils';
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -36,6 +36,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </head>
       <body
         className={`${montserrat.variable} ${roboto.variable} antialiased h-[calc(100vh-64px)]`}
       >
