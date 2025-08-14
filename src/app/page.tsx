@@ -3,9 +3,11 @@ import { Button } from '@/src/components/ui/button';
 import { Input } from '@/src/components/ui/input';
 import { Search } from 'lucide-react';
 import { useState } from 'react';
+import { InputSearch } from '../components/custom/InputSearch';
+import { redirect } from 'next/navigation';
 
 export default function Home() {
-  const [search, setSearch] = useState();
+  const [search, setSearch] = useState<string>('');
 
   return (
     <main className="flex flex-col items-center justify-center h-full">
@@ -21,12 +23,7 @@ export default function Home() {
         </div>
         <div className="w-full">
           <div className="flex justify-center w-full">
-            <div className="relative w-full">
-              <Input className="!bg-[#2D3D50] border-[#6C7E94] rounded-lg py-7 px-3 text-4xl" />
-              <Button className="bg-[#FE8A00]  hover:bg-[#CE7000] p-5 absolute right-3 top-1/2 -translate-y-1/2 text-white flex justify-center items-center rounded-md ">
-                <Search className="text-xl" />
-              </Button>
-            </div>
+            <InputSearch search={search} setSearch={setSearch} />
           </div>
         </div>
       </div>
