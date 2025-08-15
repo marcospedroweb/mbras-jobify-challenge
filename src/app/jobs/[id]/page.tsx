@@ -13,9 +13,9 @@ import { JobDetailSkeleton } from '@/src/components/custom/JobDetailSkeleton';
 import JobCard from '@/src/components/custom/JobCard';
 import JobLogo from '@/src/components/custom/JobLogo';
 import { toast } from 'react-toastify';
+import { APP_URL } from '@/src/config';
 
 export default function ShowJobPage() {
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL;
   const params = useParams();
   const searchParams = useSearchParams();
   const job_id = params.id ?? '';
@@ -33,7 +33,7 @@ export default function ShowJobPage() {
 
     try {
       const response = await fetch(
-        `${appUrl}/api/jobs/${job_id}?search=${search}&company_name=${company_name}&category=${category}`,
+        `${APP_URL}/api/jobs/${job_id}?search=${search}&company_name=${company_name}&category=${category}`,
       );
 
       const data = await response.json();
@@ -43,7 +43,7 @@ export default function ShowJobPage() {
 
       if (!jobData.length) {
         toast.error('Nenhuma vaga encontrada com essas caracteristicas.');
-        router.push(`${appUrl}/jobs`);
+        router.push(`${APP_URL}/jobs`);
       }
 
       console.log(jobData);
@@ -60,7 +60,7 @@ export default function ShowJobPage() {
 
     try {
       const response = await fetch(
-        `${appUrl}/api/jobs?category=${category}&limit=7`,
+        `${APP_URL}/api/jobs?category=${category}&limit=7`,
       );
 
       const data = await response.json();

@@ -9,9 +9,9 @@ import JobCardSkeleton from '@/src/components/custom/JobCardSkeleton';
 
 import JobsPagination from '@/src/components/custom/JobsPagination';
 import { useSearchParams } from 'next/navigation';
+import { APP_URL } from '@/src/config';
 
 export default function JobsPage() {
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL;
   const searchParams = useSearchParams();
 
   const category = searchParams.get('category') ?? '';
@@ -36,7 +36,7 @@ export default function JobsPage() {
 
     try {
       const response = await fetch(
-        `${appUrl}/api/jobs?search=${searchValue}&company_name=${company_name}&category=${categoryValue}&limit=${limit}`,
+        `${APP_URL}/api/jobs?search=${searchValue}&company_name=${company_name}&category=${categoryValue}&limit=${limit}`,
       );
 
       const data = await response.json();
