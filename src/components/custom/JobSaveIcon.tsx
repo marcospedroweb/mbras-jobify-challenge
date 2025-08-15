@@ -1,8 +1,9 @@
 import { APP_URL } from '@/src/config';
 import { createClient } from '@/src/lib/supabase/client';
 import { Bookmark, BookmarkCheck } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { User } from '@supabase/supabase-js';
 
 interface JobSaveIconProps {
   job_id: string;
@@ -18,7 +19,7 @@ const JobSaveIcon = ({
   search,
 }: JobSaveIconProps) => {
   const supabase = createClient();
-  const [user, setUser] = useState<any>(null);
+  const [, setUser] = useState<User | null>(null);
   const [isSaved, setIsSaved] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -57,7 +58,7 @@ const JobSaveIcon = ({
     toast.success(dataRes.message || 'Ação realizada com sucesso!');
   };
 
-  const checkIfSaved = async () => {
+  const checkIfSaved = useCallback(async () => {
     const { data } = await supabase.auth.getUser();
 
     try {
@@ -98,11 +99,11 @@ const JobSaveIcon = ({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [job_id, supabase]);
 
   useEffect(() => {
     checkIfSaved();
-  }, [job_id, supabase]);
+  }, [checkIfSaved]);
 
   return (
     <span

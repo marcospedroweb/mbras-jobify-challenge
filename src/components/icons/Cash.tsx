@@ -1,5 +1,5 @@
-import * as React from "react";
-const SvgCash = (props) => (
+import * as React from 'react';
+const SvgCash = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="1em"

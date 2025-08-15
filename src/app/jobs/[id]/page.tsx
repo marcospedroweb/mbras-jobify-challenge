@@ -2,12 +2,10 @@
 import JobSaveIcon from '@/src/components/custom/JobSaveIcon';
 import DOMPurify from 'dompurify';
 import { Button } from '@/src/components/ui/button';
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import type { Job } from '../../api/jobs/route';
-import Image from 'next/image';
+import { useParams, useRouter } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
+import { Job } from '../../api/jobs/route';
 import { LabelJobInfo } from '@/src/components/custom/LabelJobInfo';
-import { LabelButton } from '@/src/components/custom/LabelButton';
 import { LabelTag } from '@/src/components/custom/LabelTag';
 import { JobDetailSkeleton } from '@/src/components/custom/JobDetailSkeleton';
 import JobCard from '@/src/components/custom/JobCard';
@@ -17,20 +15,22 @@ import { APP_URL } from '@/src/config';
 
 export default function ShowJobPage() {
   const params = useParams();
-  const searchParams = useSearchParams();
+  const searchParams =
+    typeof window !== 'undefined'
+      ? new URLSearchParams(window.location.search)
+      : null;
   const job_id = params.id ?? '';
-  const category = searchParams.get('title') ?? '';
-  const company_name = searchParams.get('company_name') ?? '';
-  const search = searchParams.get('title') ?? '';
+  const category = searchParams?.get('title') ?? '';
+  const company_name = searchParams?.get('company_name') ?? '';
+  const search = searchParams?.get('title') ?? '';
   const router = useRouter();
 
   const [job, setJob] = useState<Job>();
   const [othersJobs, setOtherJobs] = useState<Job[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [, setIsLoading] = useState<boolean>(false);
 
-  const getJob = async () => {
+  const getJob = useCallback(async () => {
     setIsLoading(true);
-
     try {
       const response = await fetch(
         `${APP_URL}/api/jobs/${job_id}?search=${search}&company_name=${company_name}&category=${category}`,
@@ -46,18 +46,16 @@ export default function ShowJobPage() {
         router.push(`${APP_URL}/jobs`);
       }
 
-      console.log(jobData);
       setJob(jobData[0]);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [category, company_name, job_id, router, search]);
 
-  const getJobs = async () => {
+  const getJobs = useCallback(async () => {
     setIsLoading(true);
-
     try {
       const response = await fetch(
         `${APP_URL}/api/jobs?category=${category}&limit=7`,
@@ -70,16 +68,16 @@ export default function ShowJobPage() {
         jobsData.filter((job: Job) => job.id.toString() !== job_id).slice(0, 4),
       );
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [category, job_id]);
 
   useEffect(() => {
     getJob();
     getJobs();
-  }, []);
+  }, [getJob, getJobs]);
 
   if (job) {
     return (

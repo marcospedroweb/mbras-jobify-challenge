@@ -1,15 +1,6 @@
 import { createClient as createServerClient } from '@/src/lib/supabase/server';
 import { NextResponse } from 'next/server';
 
-interface JobParams {
-  params?: {
-    category?: string;
-    company_name?: string;
-    search?: string;
-    limit?: string;
-  };
-}
-
 export interface Job {
   id: number;
   url: string;
@@ -25,7 +16,7 @@ export interface Job {
   salary?: string;
   description: string;
 }
-export async function GET(req: Request, { params }: JobParams = {}) {
+export async function GET(req: Request) {
   const url = new URL(req.url);
 
   const category = url.searchParams.get('category');

@@ -1,7 +1,11 @@
 import { createClient as createServerClient } from '@/src/lib/supabase/server';
 import { NextResponse } from 'next/server';
 
-export async function GET(req: Request) {
+interface ApiJob {
+  id: number | string;
+}
+
+export async function GET() {
   try {
     const supabase = await createServerClient();
     const result = await supabase.auth.getUser();
@@ -46,7 +50,7 @@ export async function GET(req: Request) {
         const apiData = await res.json();
 
         const jobInfo = apiData.jobs.find(
-          (j: any) => Number(j.id) === Number(job.job_id),
+          (j: ApiJob) => Number(j.id) === Number(job.job_id),
         );
 
         return jobInfo

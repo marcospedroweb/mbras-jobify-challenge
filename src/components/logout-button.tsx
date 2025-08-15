@@ -1,16 +1,13 @@
 'use client';
 
 import { createClient } from '@/src/lib/supabase/client';
-import { Button } from '@/src/components/ui/button';
 import { useRouter } from 'next/navigation';
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuTrigger,
-  DropdownMenuSeparator,
 } from './ui/dropdown-menu';
 import { APP_URL } from '../config';
 

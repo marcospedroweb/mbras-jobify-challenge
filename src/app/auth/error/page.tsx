@@ -3,7 +3,7 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/src/components/uicard';
+} from '@/src/components/ui/card';
 
 export default async function Page({
   searchParams,

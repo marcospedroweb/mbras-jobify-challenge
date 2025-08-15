@@ -1,5 +1,4 @@
 'use client';
-import Image from 'next/image';
 import { LabelJobInfo } from './LabelJobInfo';
 import { LabelTag } from './LabelTag';
 import { Job } from '@/src/app/api/jobs/route';

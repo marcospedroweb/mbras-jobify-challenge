@@ -2,10 +2,8 @@ import { Metadata } from 'next';
 import { Montserrat, Roboto } from 'next/font/google';
 import { ThemeProvider } from 'next-themes';
 import './globals.css';
-import { EnvVarWarning } from '@/src/components/env-var-warning';
 import { AuthButton } from '@/src/components/auth-button';
 import Link from 'next/link';
-import { hasEnvVars } from '@/src/lib/utils';
 import Footer from '../components/custom/Footer';
 import { ToastContainer } from 'react-toastify';
 

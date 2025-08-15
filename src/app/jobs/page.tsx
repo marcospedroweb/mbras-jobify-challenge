@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Job } from '../api/jobs/route';
 import Image from 'next/image';
 import { InputSearch } from '@/src/components/custom/InputSearch';
@@ -8,7 +8,6 @@ import JobCard from '@/src/components/custom/JobCard';
 import JobCardSkeleton from '@/src/components/custom/JobCardSkeleton';
 
 import JobsPagination from '@/src/components/custom/JobsPagination';
-import { useSearchParams } from 'next/navigation';
 import { APP_URL } from '@/src/config';
 import {
   Accordion,
@@ -19,7 +18,10 @@ import {
 import { isMobile } from '../helpers/isMobile';
 
 export default function JobsPage() {
-  const searchParams = useSearchParams();
+  const searchParams =
+    typeof window !== 'undefined'
+      ? new URLSearchParams(window.location.search)
+      : null;
   const categories = [
     'Software Development',
     'Customer Service',
@@ -36,13 +38,13 @@ export default function JobsPage() {
     'Writing',
     'All others',
   ];
-  const category = searchParams.get('category') ?? '';
-  const company_name = searchParams.get('company_name') ?? '';
-  const search = searchParams.get('search') ?? '';
-  const limit = searchParams.get('limit') ?? 15;
+  const category = searchParams?.get('category') ?? '';
+  const company_name = searchParams?.get('company_name') ?? '';
+  const search = searchParams?.get('search') ?? '';
+  const limit = searchParams?.get('limit') ?? 15;
   const itemsPerPage = 5;
 
-  const [isMobileValue, setIsMobileValue] = useState(isMobile());
+  const [, setIsMobileValue] = useState(isMobile());
 
   const [actualPage, setActualPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
@@ -55,7 +57,7 @@ export default function JobsPage() {
   const startIndex = (actualPage - 1) * itemsPerPage;
   const paginatedJobs = jobs.slice(startIndex, startIndex + itemsPerPage);
 
-  const getJobs = async () => {
+  const getJobs = useCallback(async () => {
     setIsLoading(true);
 
     try {
@@ -65,7 +67,6 @@ export default function JobsPage() {
 
       const data = await response.json();
       const jobsData = data.jobs;
-      console.log(jobsData);
       setJobs(jobsData);
       setTotalPages(Math.ceil(jobsData.length / itemsPerPage));
       setActualPage(1);
@@ -74,9 +75,15 @@ export default function JobsPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [category, company_name, search, limit, searchValue, categoryValue]);
 
-  function CategoryList({ categoryValue, setCategoryValue }: any) {
+  function CategoryList({
+    categoryValue,
+    setCategoryValue,
+  }: {
+    categoryValue: string;
+    setCategoryValue: React.Dispatch<React.SetStateAction<string>>;
+  }) {
     return categories.map((text) => (
       <LabelButton
         key={text}
@@ -92,14 +99,14 @@ export default function JobsPage() {
     const handleResize = () => setIsMobileValue(window.innerWidth <= 768);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [getJobs]);
 
   useEffect(() => {
     const url = new URL(window.location.href);
     url.searchParams.set('category', categoryValue || '');
     window.history.replaceState({}, '', url.toString());
     getJobs();
-  }, [categoryValue]);
+  }, [categoryValue, getJobs]);
 
   return (
     <main className="flex flex-col items-center justify-start h-fit mx-3">

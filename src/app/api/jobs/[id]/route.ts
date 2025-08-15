@@ -1,14 +1,10 @@
 import { NextResponse } from 'next/server';
 
-export async function GET(
-  req: Request,
-  { params }: { params: { id: string } },
-) {
+export async function GET(req: Request) {
   const url = new URL(req.url);
   const category = url.searchParams.get('category');
   const company_name = url.searchParams.get('company_name');
   const title = url.searchParams.get('title');
-  const { id } = params;
 
   const allParams = new URLSearchParams();
 
