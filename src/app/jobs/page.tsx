@@ -10,16 +10,40 @@ import JobCardSkeleton from '@/src/components/custom/JobCardSkeleton';
 import JobsPagination from '@/src/components/custom/JobsPagination';
 import { useSearchParams } from 'next/navigation';
 import { APP_URL } from '@/src/config';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/src/components/ui/accordion';
+import { isMobile } from '../helpers/isMobile';
 
 export default function JobsPage() {
   const searchParams = useSearchParams();
-
+  const categories = [
+    'Software Development',
+    'Customer Service',
+    'Design',
+    'Marketing',
+    'Sales / Business',
+    'Product',
+    'Project Management',
+    'Data Analysis',
+    'DevOps / Sysadmin',
+    'Finance / Legal',
+    'Human Resources',
+    'QA',
+    'Writing',
+    'All others',
+  ];
   const category = searchParams.get('category') ?? '';
   const company_name = searchParams.get('company_name') ?? '';
   const search = searchParams.get('search') ?? '';
   const limit = searchParams.get('limit') ?? 15;
-
   const itemsPerPage = 5;
+
+  const [isMobileValue, setIsMobileValue] = useState(isMobile());
+
   const [actualPage, setActualPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
 
@@ -52,8 +76,22 @@ export default function JobsPage() {
     }
   };
 
+  function CategoryList({ categoryValue, setCategoryValue }: any) {
+    return categories.map((text) => (
+      <LabelButton
+        key={text}
+        text={text}
+        setState={setCategoryValue}
+        state={categoryValue}
+      />
+    ));
+  }
+
   useEffect(() => {
     getJobs();
+    const handleResize = () => setIsMobileValue(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   useEffect(() => {
@@ -64,7 +102,7 @@ export default function JobsPage() {
   }, [categoryValue]);
 
   return (
-    <main className="flex flex-col items-center justify-start h-fit">
+    <main className="flex flex-col items-center justify-start h-fit mx-3">
       <div className="relative mt-8">
         <Image
           src="/images/banner_jobs.png"
@@ -85,86 +123,32 @@ export default function JobsPage() {
         </div>
       </div>
       <div className="grid grid-cols-10 max-w-[1155px]  justify-between items-start mt-16 gap-5 mb-36">
-        <div className="col-span-3">
-          <div>
-            <h2 className="text-xl font-bold mb-3">Categoria</h2>
-            <LabelButton
-              text="Software Development"
-              setState={setCategoryValue}
-              state={categoryValue}
-            />
-            <LabelButton
-              text="Customer Service"
-              setState={setCategoryValue}
-              state={categoryValue}
-            />
-            <LabelButton
-              text="Design"
-              setState={setCategoryValue}
-              state={categoryValue}
-            />
-            <LabelButton
-              text="Marketing"
-              setState={setCategoryValue}
-              state={categoryValue}
-            />
-            <LabelButton
-              text="Sales / Business"
-              setState={setCategoryValue}
-              state={categoryValue}
-            />
-            <LabelButton
-              text="Product"
-              setState={setCategoryValue}
-              state={categoryValue}
-            />
-            <LabelButton
-              text="Project Management"
-              setState={setCategoryValue}
-              state={categoryValue}
-            />
-            <LabelButton
-              text="Data Analysis"
-              setState={setCategoryValue}
-              state={categoryValue}
-            />
-            <LabelButton
-              text="DevOps / Sysadmin"
-              setState={setCategoryValue}
-              state={categoryValue}
-            />
-            <LabelButton
-              text="Finance / Legal"
-              setState={setCategoryValue}
-              state={categoryValue}
-            />
-            <LabelButton
-              text="Human Resources"
-              setState={setCategoryValue}
-              state={categoryValue}
-            />
-            <LabelButton
-              text="QA"
-              setState={setCategoryValue}
-              state={categoryValue}
-            />
-            <LabelButton
-              text="Writing"
-              setState={setCategoryValue}
-              state={categoryValue}
-            />
-            <LabelButton
-              text="All others"
-              setState={setCategoryValue}
-              state={categoryValue}
-            />
-          </div>
-          {/* <div>
-            <h2 className="text-xl font-bold mb-3">Tipo de trabalho</h2>
-
-          </div> */}
+        <div className="col-span-12 lg:col-span-3">
+          {isMobile() ? (
+            <Accordion type="single" collapsible>
+              <AccordionItem value="item-1">
+                <AccordionTrigger className="text-2xl no-underline hover:no-underline font-bold">
+                  Categoria
+                </AccordionTrigger>
+                <AccordionContent className="py-5">
+                  <CategoryList
+                    categoryValue={categoryValue}
+                    setCategoryValue={setCategoryValue}
+                  />
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          ) : (
+            <div>
+              <h2 className="text-xl font-bold mb-3">Categoria</h2>
+              <CategoryList
+                categoryValue={categoryValue}
+                setCategoryValue={setCategoryValue}
+              />
+            </div>
+          )}
         </div>
-        <div className="col-span-7 h-full">
+        <div className="col-span-12 lg:col-span-7 h-full">
           {!isLoading && (
             <div className="text-end">
               <span className="text-sm font-medium mb-2">

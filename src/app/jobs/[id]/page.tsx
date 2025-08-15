@@ -83,24 +83,26 @@ export default function ShowJobPage() {
 
   if (job) {
     return (
-      <main className="grid grid-cols-12 max-w-[1392px] mx-auto gap-6 mt-28 mb-36">
-        <div className="col-span-8 bg-[#2D3D50] py-8 px-6 flex flex-col justify-center items-start mb-6 rounded-lg">
-          <div className="flex justify-between items-center gap-4 mb-6">
-            <h2 className="text-2xl font-bold ">
+      <main className="grid grid-cols-12 max-w-[1392px] mx-3 lg:mx-auto gap-6 mt-12 lg:mt-28 mb-36">
+        <div className="col-span-12 lg:col-span-8 bg-[#2D3D50] py-8 px-6 flex flex-col justify-center items-start mb-6 rounded-lg">
+          <div className="flex flex-col lg:flex-row justify-between items-end lg:items-center gap-4 mb-6">
+            <h2 className="text-2xl font-bold w-full">
               Founding Full Stack - LLM, AI (no prior AI experience required)
             </h2>
-            <div>
-              <Button className="bg-[#FE8A00] text-white font-bold text-lg hover:bg-[#CE7000]">
-                Candidatar
-              </Button>
-            </div>
-            <div>
-              <JobSaveIcon
-                job_id={job_id.toString()}
-                category={category}
-                company_name={company_name}
-                search={search}
-              />
+            <div className="flex justify-end items-center gap-3 w-full lg:w-fit">
+              <div className="w-full lg:w-fit">
+                <Button className="bg-[#FE8A00] text-white font-bold text-lg hover:bg-[#CE7000] w-full lg:w-fit">
+                  Candidatar
+                </Button>
+              </div>
+              <div>
+                <JobSaveIcon
+                  job_id={job_id.toString()}
+                  category={category}
+                  company_name={company_name}
+                  search={search}
+                />
+              </div>
             </div>
           </div>
           <div className="flex justify-start items-start gap-3 bg-[#243141] py-5 px-3 w-full rounded-2xl">
@@ -130,6 +132,7 @@ export default function ShowJobPage() {
               dangerouslySetInnerHTML={{
                 __html: DOMPurify.sanitize(job.description),
               }}
+              className="[&_p]:!text-white [&_*]:!text-white"
             ></p>
           </div>
           <div className="mt-8 flex flex-col items-start">
@@ -149,7 +152,7 @@ export default function ShowJobPage() {
             })}
           </div>
         </div>
-        <div className="col-span-4">
+        <div className="col-span-12 lg:col-span-4">
           <h2 className="font-bold text-xl mb-3">Outras vagas</h2>
           {othersJobs.map((job) => {
             return <JobCard key={job.id} job={job} small={true} />;

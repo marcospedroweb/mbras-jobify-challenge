@@ -18,7 +18,7 @@ export function InputSearch({
   return (
     <form className="relative w-full" onSubmit={onSearch}>
       <Input
-        className="!bg-[#2D3D50] border-[#6C7E94] rounded-lg py-7 px-3 text-4xl"
+        className="!bg-[#2D3D50] border-[#6C7E94] rounded-lg py-7 px-3 lg:text-2xl"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />

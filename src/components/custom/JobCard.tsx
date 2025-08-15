@@ -42,7 +42,7 @@ export default function JobCard({
         }}
       >
         <div className="flex justify-between w-full">
-          <div className="flex-shrink-0 me-2">
+          <div className="hidden lg:flex flex-shrink-0 me-2 ">
             <JobLogo src={company_logo} small={true} />
           </div>
           <div className="flex flex-col justify-start items-start gap-3 flex-grow">
@@ -80,7 +80,7 @@ export default function JobCard({
           );
         }}
       >
-        <div className="flex-shrink-0">
+        <div className="hidden lg:flex flex-shrink-0">
           <JobLogo src={company_logo} />
         </div>
         <div className="flex flex-col justify-start items-start gap-3 flex-grow">

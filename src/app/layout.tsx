@@ -44,18 +44,22 @@ export default function RootLayout({
       <body
         className={`${montserrat.variable} ${roboto.variable} antialiased h-full`}
       >
-        <ToastContainer />
+        <ToastContainer
+          className={
+            'max-w-[90vw] mx-auto mt-4 lg:max-w-full lg:mx-auto lg:mt-0'
+          }
+        />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <nav className="w-full flex justify-center h-16 border-b-2 border-b-[#6F6E6E]/30">
-            <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
-              <div className="flex gap-5 items-center font-semibold">
+          <nav className="w-full flex justify-center h-fit lg:h-16 border-b-2 border-b-[#6F6E6E]/30">
+            <div className="w-full max-w-5xl flex flex-col lg:flex-row justify-between items-center p-3 px-5 text-sm gap-3">
+              <div className="flex gap-5 items-center font-semibold mt-2 lg:mt-0 ">
                 <h1>
-                  <Link href={'/'} className="text-[40px]">
+                  <Link href={'/'} className="text-[40px] ">
                     Jobify
                   </Link>
                 </h1>
