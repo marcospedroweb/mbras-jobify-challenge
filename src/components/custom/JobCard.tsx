@@ -14,7 +14,7 @@ export default function JobCard({
   small = false,
 }: {
   job: Job;
-  small: boolean;
+  small?: boolean;
 }) {
   const {
     id,

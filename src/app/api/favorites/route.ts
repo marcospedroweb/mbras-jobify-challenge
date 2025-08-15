@@ -1,6 +1,67 @@
 import { createClient as createServerClient } from '@/src/lib/supabase/server';
 import { NextResponse } from 'next/server';
 
+export async function GET(req: Request) {
+  try {
+    const supabase = await createServerClient();
+    const result = await supabase.auth.getUser();
+    const user = result.data.user;
+    const userError = result.error;
+
+    if (userError || !user) {
+      console.error('Erro de autenticação:', userError);
+      return NextResponse.json(
+        { error: userError?.message || 'Usuário não autenticado' },
+        { status: userError?.status || 401 },
+      );
+    }
+
+    const { data: favorites, error: favError } = await supabase
+      .from('favorites')
+      .select(
+        'id, job_id, jobs!inner(id, job_id, title, company_name, category)',
+      )
+      .eq('user_id', user.id);
+
+    if (favError) {
+      console.error('Erro ao buscar favoritos existentes:', favError);
+      return NextResponse.json(
+        { error: 'Erro ao buscar favoritos' },
+        { status: 500 },
+      );
+    }
+
+    const jobDetails = await Promise.all(
+      favorites.map(async (fav) => {
+        const job = Array.isArray(fav.jobs) ? fav.jobs[0] : fav.jobs;
+        if (!job) return null; // evita erro se não encontrar job
+
+        const params = new URLSearchParams();
+        if (job.category) params.append('category', job.category);
+        if (job.company_name) params.append('company_name', job.company_name);
+        if (job.title) params.append('search', job.title);
+
+        const query = `https://remotive.com/api/remote-jobs?${params.toString()}`;
+        const res = await fetch(query);
+        const apiData = await res.json();
+
+        const jobInfo = apiData.jobs.find(
+          (j: any) => Number(j.id) === Number(job.job_id),
+        );
+
+        return jobInfo
+          ? { favorite_id: fav.id, ...jobInfo }
+          : { favorite_id: fav.id, error: 'Job não encontrado' };
+      }),
+    );
+
+    return NextResponse.json({ favorites: jobDetails }, { status: 200 });
+  } catch (err) {
+    console.error('Erro inesperado na função POST:', err);
+    return NextResponse.json({ error: 'Erro interno' }, { status: 500 });
+  }
+}
+
 export async function POST(req: Request) {
   try {
     const supabase = await createServerClient();
