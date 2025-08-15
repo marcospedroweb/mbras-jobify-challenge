@@ -1,4 +1,4 @@
-import { createClient } from '@/src/lib/supabase/client';
+import { createClient as createServerClient } from '@/src/lib/supabase/server';
 import { NextResponse } from 'next/server';
 
 interface JobParams {
@@ -49,7 +49,7 @@ export async function GET(req: Request, { params }: JobParams = {}) {
 }
 
 export async function POST(req: Request) {
-  const supabase = await createClient();
+  const supabase = await createServerClient();
   const { job_id, company_name, title, category } = await req.json();
 
   const {
