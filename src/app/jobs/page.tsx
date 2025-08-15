@@ -45,7 +45,6 @@ export default function JobsPage() {
       setJobs(jobsData);
       setTotalPages(Math.ceil(jobsData.length / itemsPerPage));
       setActualPage(1);
-      // setPaginatedJobs(jobsData.slice(startIndex, startIndex + itemsPerPage));
     } catch (error) {
       console.log(error);
     } finally {
@@ -86,7 +85,6 @@ export default function JobsPage() {
         </div>
       </div>
       <div className="grid grid-cols-10 max-w-[1155px]  justify-between items-start mt-16 gap-5 mb-36">
-        {/* <h2 className="bg-red-400 block w-full">Teste</h2> */}
         <div className="col-span-3">
           <div>
             <h2 className="text-xl font-bold mb-3">Categoria</h2>
