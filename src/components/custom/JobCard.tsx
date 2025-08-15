@@ -7,6 +7,7 @@ import { limitText } from '@/src/app/helpers/limitText';
 import { useRouter } from 'next/navigation';
 import JobSaveIcon from './JobSaveIcon';
 import JobLogo from './JobLogo';
+import { APP_URL } from '@/src/config';
 
 export default function JobCard({
   job,
@@ -26,7 +27,6 @@ export default function JobCard({
     salary,
     category,
   } = job;
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL;
 
   const route = useRouter();
 
@@ -37,7 +37,7 @@ export default function JobCard({
         className="bg-[#2D3D50] hover:bg-[#202F40] border-[#6C7E94] border-[1px] rounded-lg w-full transition-all ease-in duration-75 me-[6px] mb-2 p-6 cursor-pointer flex flex-col justify-between items-start gap-4"
         onClick={() => {
           route.push(
-            `${appUrl}/jobs/${id}?title=${title}&company_name=${company_name}&category=${category}`,
+            `${APP_URL}/jobs/${id}?title=${title}&company_name=${company_name}&category=${category}`,
           );
         }}
       >
@@ -76,7 +76,7 @@ export default function JobCard({
         className="bg-[#2D3D50] hover:bg-[#202F40] border-[#6C7E94] border-[1px] rounded-lg w-full transition-all ease-in duration-75 me-[6px] mb-4 p-6 cursor-pointer flex justify-between items-start gap-4"
         onClick={() => {
           route.push(
-            `${appUrl}/jobs/${id}?title=${title}&company_name=${company_name}&category=${category}`,
+            `${APP_URL}/jobs/${id}?title=${title}&company_name=${company_name}&category=${category}`,
           );
         }}
       >

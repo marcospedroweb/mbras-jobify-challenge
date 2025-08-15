@@ -2,17 +2,17 @@
 import { useState } from 'react';
 import { InputSearch } from '../components/custom/InputSearch';
 import { useRouter } from 'next/navigation';
+import { APP_URL } from '../config';
 
 export default function Home() {
   const [search, setSearch] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL;
   const router = useRouter();
 
   const searchJob = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     setIsLoading(!isLoading);
-    router.push(`${appUrl}/jobs?search=${search}`);
+    router.push(`${APP_URL}/jobs?search=${search}`);
   };
 
   return (
