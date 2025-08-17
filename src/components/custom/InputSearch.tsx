@@ -16,7 +16,10 @@ export function InputSearch({
   isLoading,
 }: InputSearchProps) {
   return (
-    <form className="relative w-full" onSubmit={onSearch}>
+    <form
+      className="relative w-full"
+      onSubmit={isLoading ? () => {} : onSearch}
+    >
       <Input
         className="!bg-[#2D3D50] border-[#6C7E94] rounded-lg py-7 px-3 lg:text-2xl"
         value={search}
@@ -24,7 +27,7 @@ export function InputSearch({
       />
       <Button
         className="bg-[#FE8A00]  hover:bg-[#CE7000] p-5 absolute right-3 top-1/2 -translate-y-1/2 text-white flex justify-center items-center rounded-md "
-        onClick={onSearch}
+        onClick={isLoading ? () => {} : onSearch}
         disabled={isLoading}
       >
         {isLoading ? (
