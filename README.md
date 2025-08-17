@@ -1,105 +1,168 @@
-<a href="https://demo-nextjs-with-supabase.vercel.app/">
-  <img alt="Next.js and Supabase Starter Kit - the fastest way to build apps with Next.js and Supabase" src="https://demo-nextjs-with-supabase.vercel.app/opengraph-image.png">
-  <h1 align="center">Next.js and Supabase Starter Kit</h1>
-</a>
+# Jobify
 
-<p align="center">
- The fastest way to build apps with Next.js and Supabase
-</p>
+Projeto de busca de vagas remotas — Next.js + TailwindCSS + shadcn/ui + Supabase. O Jobify consome a API pública (Remotive) via uma API interna e permite buscar vagas, ver detalhes e salvar favoritos com autenticação.
 
-<p align="center">
-  <a href="#features"><strong>Features</strong></a> ·
-  <a href="#demo"><strong>Demo</strong></a> ·
-  <a href="#deploy-to-vercel"><strong>Deploy to Vercel</strong></a> ·
-  <a href="#clone-and-run-locally"><strong>Clone and run locally</strong></a> ·
-  <a href="#feedback-and-issues"><strong>Feedback and issues</strong></a>
-  <a href="#more-supabase-examples"><strong>More Examples</strong></a>
-</p>
-<br/>
+## 💡 Ideia do Projeto
 
-## Features
+O objetivo é oferecer uma interface simples e rápida para quem busca vagas remotas. Funcionalidades principais:
 
-- Works across the entire [Next.js](https://nextjs.org) stack
-  - App Router
-  - Pages Router
-  - Middleware
-  - Client
-  - Server
-  - It just works!
-- supabase-ssr. A package to configure Supabase Auth to use cookies
-- Password-based authentication block installed via the [Supabase UI Library](https://supabase.com/ui/docs/nextjs/password-based-auth)
-- Styling with [Tailwind CSS](https://tailwindcss.com)
-- Components with [shadcn/ui](https://ui.shadcn.com/)
-- Optional deployment with [Supabase Vercel Integration and Vercel deploy](#deploy-your-own)
-  - Environment variables automatically assigned to Vercel project
+- Buscar vagas por texto (search) e filtrar por categoria.
+- Listagem paginada de vagas (frontend consome `/api/jobs` que wrapa a API Remotive).
+- Página de detalhes de cada vaga (descrição sanitizada).
+- Favoritar vagas — vagas salvas por usuário ficam persistidas no Supabase.
+- Autenticação com Supabase (login / logout).
 
-## Demo
+## 🛠️ Tecnologias Utilizadas
 
-You can view a fully working demo at [demo-nextjs-with-supabase.vercel.app](https://demo-nextjs-with-supabase.vercel.app/).
+**Front-end:**
 
-## Deploy to Vercel
+- Next.js (App Router)
+- TypeScript
+- TailwindCSS + shadcn/ui
+- Lucide icons
 
-Vercel deployment will guide you through creating a Supabase account and project.
+**Back-end / Infra:**
 
-After installation of the Supabase integration, all relevant environment variables will be assigned to the project so the deployment is fully functioning.
+- Supabase (Auth + Postgres para favoritos)
+- API interna (`/api/jobs`) — proxy para Remotive
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&project-name=nextjs-with-supabase&repository-name=nextjs-with-supabase&demo-title=nextjs-with-supabase&demo-description=This+starter+configures+Supabase+Auth+to+use+cookies%2C+making+the+user%27s+session+available+throughout+the+entire+Next.js+app+-+Client+Components%2C+Server+Components%2C+Route+Handlers%2C+Server+Actions+and+Middleware.&demo-url=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2F&external-id=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&demo-image=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2Fopengraph-image.png)
+---
 
-The above will also clone the Starter kit to your GitHub, you can clone that locally and develop locally.
+## 🧑‍💻 Sobre o Desenvolvimento
 
-If you wish to just develop locally and not deploy to Vercel, [follow the steps below](#clone-and-run-locally).
+Desenvolvi a aplicação inteira em Next.js: componentes principais (JobCard, JobCardSkeleton, InputSearch, filtros), integrações com Supabase e rotas de API que consomem Remotive. O projeto foca em experiência de busca, filtros e persistência de favoritos por usuário.
 
-## Clone and run locally
+## 🚀 Como Executar Localmente
 
-1. You'll first need a Supabase project which can be made [via the Supabase dashboard](https://database.new)
+### Pré-requisitos
 
-2. Create a Next.js app using the Supabase Starter template npx command
+- Node >= 18
+- npm ou pnpm/yarn
+- Git
+- Conta Supabase (recomendado: Supabase Cloud) ou Supabase CLI + Docker para dev local (opcional)
 
-   ```bash
-   npx create-next-app --example with-supabase with-supabase-app
-   ```
+### 1 — Clone o repositório
 
-   ```bash
-   yarn create next-app --example with-supabase with-supabase-app
-   ```
+```bash
+git clone <seu-repo-url>
+cd <seu-repo>
+```
 
-   ```bash
-   pnpm create next-app --example with-supabase with-supabase-app
-   ```
+### 2 — Instale as dependências
 
-3. Use `cd` to change into the app's directory
+```bash
+npm install
+# ou: pnpm install
+```
 
-   ```bash
-   cd with-supabase-app
-   ```
+### 3 — Variáveis de ambiente
 
-4. Rename `.env.example` to `.env.local` and update the following:
+Crie um arquivo `.env.local` na raiz com as variáveis mínimas:
 
-   ```
-   NEXT_PUBLIC_SUPABASE_URL=[INSERT SUPABASE PROJECT URL]
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=[INSERT SUPABASE PROJECT API ANON KEY]
-   ```
+```
+NEXT_PUBLIC_APP_URL=http://localhost:3000
 
-   Both `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` can be found in [your Supabase project's API settings](https://supabase.com/dashboard/project/_?showConnect=true)
+# Supabase (Cloud recomendado)
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 
-5. You can now run the Next.js local development server:
+# Service role (APENAS para uso server-side; não expor ao cliente)
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+```
 
-   ```bash
-   npm run dev
-   ```
+Se for usar Supabase local ajuste `NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321` e as chaves geradas localmente.
 
-   The starter kit should now be running on [localhost:3000](http://localhost:3000/).
+> **Atenção:** Não comite `.env.local`.
 
-6. This template comes with the default shadcn/ui style initialized. If you instead want other ui.shadcn styles, delete `components.json` and [re-install shadcn/ui](https://ui.shadcn.com/docs/installation/next)
+### 4 — Configurar `next/image` (domínios externos)
 
-> Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
+Se o projeto carregar logos externos (ex.: `remotive.com`), adicione os domínios em `next.config.js`:
 
-## Feedback and issues
+```js
+module.exports = {
+  images: {
+    domains: ['remotive.com'],
+  },
+};
+```
 
-Please file feedback and issues over on the [Supabase GitHub org](https://github.com/supabase/supabase/issues/new/choose).
+### 5 — Rodar o projeto
 
-## More Supabase examples
+```bash
+npm run dev
+# abra http://localhost:3000
+```
 
-- [Next.js Subscription Payments Starter](https://github.com/vercel/nextjs-subscription-payments)
-- [Cookie-based Auth and the Next.js 13 App Router (free course)](https://youtube.com/playlist?list=PL5S4mPUpp4OtMhpnp93EFSo42iQ40XjbF)
-- [Supabase Auth and the Next.js App Router](https://github.com/supabase/supabase/tree/master/examples/auth/nextjs)
+---
+
+## 🔧 Rodando Supabase local (opcional)
+
+Se quiser testar RLS e policies localmente:
+
+- Instale a CLI do Supabase (siga a documentação oficial).
+- Inicie os serviços:
+
+```bash
+supabase start
+```
+
+- Pegue as chaves com `supabase status` e coloque no `.env.local`.
+- Crie as tabelas e policies (psql ou migrations). Tabelas importantes:
+  - `jobs` (id uuid, created_at, company_name, title, category, job_id int4)
+  - `favorites` (id uuid, created_at, user_id uuid FK, job_id uuid FK)
+
+---
+
+## 📦 Comandos úteis
+
+```bash
+npm run dev        # dev server
+npm run build      # build para produção
+npm run start      # start após build
+```
+
+---
+
+## ⚠️ Erros comuns & soluções rápidas
+
+- **Invalid src prop (next/image)**: adicione o domínio em `next.config.js`.
+- **Auth session missing!**: verifique se a chamada que requer autent está usando o token correto (ou rode via server usando `service_role` para operações administrativas).
+- **new row violates row-level security policy**: revise as policies RLS no Supabase e garanta que o usuário autenticado esteja passando o token correto. Para desenvolvimento, você pode usar `service_role` em rotas server-side ao inserir dados, mas nunca exponha a chave no cliente.
+
+---
+
+## 🚀 Deploy
+
+**Vercel (recomendado para Next.js)**
+
+- Conecte o repo no Vercel (Import Project).
+- Adicione as variáveis de ambiente no dashboard do Vercel (anon key, service role — service role só para server).
+- Deploy automático por push ao repositório.
+
+> Observação: Vercel **não** roda containers Docker. Se quiser usar container, prefira Fly/Render/DigitalOcean.
+
+---
+
+## Estrutura de pastas (resumo)
+
+```
+src/
+  app/
+    jobs/            # pages (list, show)
+    api/jobs/route.ts # wrapper para Remotive
+  components/
+    custom/          # JobCard, InputSearch, LabelButton, etc
+  lib/
+    supabase/        # clients (server / client)
+  styles/
+next.config.js
+```
+
+---
+
+## Próximos passos que eu posso ajudar
+
+- gerar um `Dockerfile` e `docker-compose.yml` para rodar Next + Supabase localmente;
+- ou preparar as instruções passo-a-passo para publicar no **Vercel** (incluir env vars corretamente).
+
+Qual prefere que eu gere agora?
