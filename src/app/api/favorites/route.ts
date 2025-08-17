@@ -38,7 +38,7 @@ export async function GET() {
     const jobDetails = await Promise.all(
       favorites.map(async (fav) => {
         const job = Array.isArray(fav.jobs) ? fav.jobs[0] : fav.jobs;
-        if (!job) return null; // evita erro se não encontrar job
+        if (!job) return null; 
 
         const params = new URLSearchParams();
         if (job.category) params.append('category', job.category);

@@ -6,7 +6,6 @@ import { InputSearch } from '@/src/components/custom/InputSearch';
 import { LabelButton } from '@/src/components/custom/LabelButton';
 import JobCard from '@/src/components/custom/JobCard';
 import JobCardSkeleton from '@/src/components/custom/JobCardSkeleton';
-
 import JobsPagination from '@/src/components/custom/JobsPagination';
 import { APP_URL } from '@/src/config';
 import {
@@ -22,6 +21,7 @@ export default function JobsPage() {
     typeof window !== 'undefined'
       ? new URLSearchParams(window.location.search)
       : null;
+
   const categories = [
     'Software Development',
     'Customer Service',
@@ -38,44 +38,50 @@ export default function JobsPage() {
     'Writing',
     'All others',
   ];
-  const category = searchParams?.get('category') ?? '';
-  const company_name = searchParams?.get('company_name') ?? '';
-  const search = searchParams?.get('search') ?? '';
+
   const limit = searchParams?.get('limit') ?? 15;
   const itemsPerPage = 5;
 
   const [, setIsMobileValue] = useState(isMobile());
+  const [initialized, setInitialized] = useState(false);
 
   const [actualPage, setActualPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
 
   const [jobs, setJobs] = useState<Job[]>([]);
-  const [searchValue, setSearchValue] = useState<string>(search || '');
-  const [categoryValue, setCategoryValue] = useState<string>(category || '');
+  const [searchValue, setSearchValue] = useState<string>('');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [categoryValue, setCategoryValue] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const startIndex = (actualPage - 1) * itemsPerPage;
   const paginatedJobs = jobs.slice(startIndex, startIndex + itemsPerPage);
 
-  const getJobs = useCallback(async () => {
-    setIsLoading(true);
+  const getJobs = useCallback(
+    async (search: string, category: string) => {
+      const searchString = search ?? '';
+      const categoryString = category ?? '';
 
-    try {
-      const response = await fetch(
-        `${APP_URL}/api/jobs?search=${searchValue}&company_name=${company_name}&category=${categoryValue}&limit=${limit}`,
-      );
+      setIsLoading(true);
 
-      const data = await response.json();
-      const jobsData = data.jobs;
-      setJobs(jobsData);
-      setTotalPages(Math.ceil(jobsData.length / itemsPerPage));
-      setActualPage(1);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [category, company_name, search, limit, searchValue, categoryValue]);
+      try {
+        const response = await fetch(
+          `${APP_URL}/api/jobs?search=${searchString}&category=${categoryString}&limit=${limit}`,
+        );
+
+        const data = await response.json();
+        const jobsData = data.jobs ?? [];
+        setJobs(jobsData);
+        setTotalPages(Math.ceil(jobsData.length / itemsPerPage));
+        setActualPage(1);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [categoryValue, limit, searchQuery],
+  );
 
   function CategoryList({
     categoryValue,
@@ -95,18 +101,43 @@ export default function JobsPage() {
   }
 
   useEffect(() => {
-    getJobs();
+    if (typeof window === 'undefined') return;
+
+    const params = new URLSearchParams(window.location.search);
+    const searchActual = params.get('search') ?? '';
+    const categoryActual = params.get('category') ?? '';
+
+    setInitialized(true);
+
+    setSearchValue(searchActual);
+    setSearchQuery(searchActual);
+    setCategoryValue(categoryActual);
+
     const handleResize = () => setIsMobileValue(window.innerWidth <= 768);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [getJobs]);
+  }, []);
 
   useEffect(() => {
-    const url = new URL(window.location.href);
-    url.searchParams.set('category', categoryValue || '');
-    window.history.replaceState({}, '', url.toString());
-    getJobs();
-  }, [categoryValue, getJobs]);
+    if (!initialized) return;
+
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+
+      if (categoryValue) url.searchParams.set('category', categoryValue);
+      else url.searchParams.delete('category');
+
+      if (searchQuery) url.searchParams.set('search', searchQuery);
+      else url.searchParams.delete('search');
+
+      const newUrl = url.toString();
+      if (newUrl !== window.location.href) {
+        window.history.replaceState({}, '', newUrl);
+      }
+    }
+
+    getJobs(searchQuery, categoryValue);
+  }, [categoryValue, searchQuery, getJobs]);
 
   return (
     <main className="flex flex-col items-center justify-start h-fit mx-3">
@@ -123,12 +154,13 @@ export default function JobsPage() {
             setSearch={setSearchValue}
             onSearch={(e) => {
               e.preventDefault();
-              getJobs();
+              setSearchQuery(searchValue);
             }}
             isLoading={isLoading}
           />
         </div>
       </div>
+
       <div className="grid grid-cols-10 max-w-[1155px]  justify-between items-start mt-16 gap-5 mb-36">
         <div className="col-span-12 lg:col-span-3">
           {isMobile() ? (
@@ -155,6 +187,7 @@ export default function JobsPage() {
             </div>
           )}
         </div>
+
         <div className="col-span-12 lg:col-span-7 h-full">
           {!isLoading && (
             <div className="text-end">
@@ -163,6 +196,7 @@ export default function JobsPage() {
               </span>
             </div>
           )}
+
           {isLoading ? (
             Array.from({ length: 4 }).map((_, i) => <JobCardSkeleton key={i} />)
           ) : jobs.length ? (
@@ -174,6 +208,7 @@ export default function JobsPage() {
               </h2>
             </div>
           )}
+
           {totalPages > 1 && (
             <div className="mt-6">
               <JobsPagination
