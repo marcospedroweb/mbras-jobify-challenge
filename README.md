@@ -34,6 +34,7 @@ O objetivo é oferecer uma interface simples e rápida para quem busca vagas rem
 ## 🧑‍💻 Sobre o Desenvolvimento
 
 Realizei o desenvolvimento da aplicação inteira em Next.js: componentes principais, integrações com Supabase e rotas de API que consomem Remotive. O projeto foca em experiência de busca, filtros e persistência de favoritos por usuário.
+Este projeto também foi criado como exercício/prático para consolidar e treinar o uso das ferramentas: Next.js, Supabase, TailwindCSS e shadcn/ui.
 
 ## 🚀 Como Executar Localmente
 
@@ -73,8 +74,6 @@ SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 ```
 
 Se for usar Supabase local ajuste `NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321` e as chaves geradas localmente.
-
-> **Atenção:** Não comite `.env.local`.
 
 ### 4 — Configurar `next/image` (domínios externos)
 
