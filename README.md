@@ -2,6 +2,9 @@
 
 Projeto de busca de vagas remotas; Next.js + TailwindCSS + shadcn/ui + Supabase. O Jobify consome a API pública (Remotive) via uma API interna e permite buscar vagas, ver detalhes e salvar favoritos com autenticação.
 
+Design (Figma): https://www.figma.com/file/COLOQUE_O_SEU_LINK_AQUI
+Demo (Vercel): https://SEU-PROJETO.vercel.app
+
 ## 💡 Ideia do Projeto
 
 O objetivo é oferecer uma interface simples e rápida para quem busca vagas remotas. Funcionalidades principais:
@@ -52,7 +55,6 @@ cd <seu-repo>
 
 ```bash
 npm install
-# ou: pnpm install
 ```
 
 ### 3 — Variáveis de ambiente
