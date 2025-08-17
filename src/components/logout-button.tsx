@@ -43,12 +43,4 @@ export function LogoutButton() {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-  // return (
-  //   <Button
-  //     onClick={logout}
-  //     className="bg-[#FE8A00] text-white font-bold text-lg hover:bg-[#CE7000]"
-  //   >
-  //     Logout
-  //   </Button>
-  // );
 }
