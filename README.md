@@ -1,15 +1,15 @@
 # Jobify
 
-Projeto de busca de vagas remotas — Next.js + TailwindCSS + shadcn/ui + Supabase. O Jobify consome a API pública (Remotive) via uma API interna e permite buscar vagas, ver detalhes e salvar favoritos com autenticação.
+Projeto de busca de vagas remotas; Next.js + TailwindCSS + shadcn/ui + Supabase. O Jobify consome a API pública (Remotive) via uma API interna e permite buscar vagas, ver detalhes e salvar favoritos com autenticação.
 
 ## 💡 Ideia do Projeto
 
 O objetivo é oferecer uma interface simples e rápida para quem busca vagas remotas. Funcionalidades principais:
 
-- Buscar vagas por texto (search) e filtrar por categoria.
+- Buscar vagas por pesquisa e filtrar por categoria.
 - Listagem paginada de vagas (frontend consome `/api/jobs` que wrapa a API Remotive).
-- Página de detalhes de cada vaga (descrição sanitizada).
-- Favoritar vagas — vagas salvas por usuário ficam persistidas no Supabase.
+- Página de detalhes de cada vaga.
+- Favoritar vagas; vagas salvas por usuário ficam persistidas no Supabase.
 - Autenticação com Supabase (login / logout).
 
 ## 🛠️ Tecnologias Utilizadas
@@ -24,13 +24,13 @@ O objetivo é oferecer uma interface simples e rápida para quem busca vagas rem
 **Back-end / Infra:**
 
 - Supabase (Auth + Postgres para favoritos)
-- API interna (`/api/jobs`) — proxy para Remotive
+- API interna (`/api/jobs`)
 
 ---
 
 ## 🧑‍💻 Sobre o Desenvolvimento
 
-Desenvolvi a aplicação inteira em Next.js: componentes principais (JobCard, JobCardSkeleton, InputSearch, filtros), integrações com Supabase e rotas de API que consomem Remotive. O projeto foca em experiência de busca, filtros e persistência de favoritos por usuário.
+Realizei o desenvolvimento da aplicação inteira em Next.js: componentes principais, integrações com Supabase e rotas de API que consomem Remotive. O projeto foca em experiência de busca, filtros e persistência de favoritos por usuário.
 
 ## 🚀 Como Executar Localmente
 
@@ -121,30 +121,6 @@ npm run build      # build para produção
 npm run start      # start após build
 ```
 
----
-
-## ⚠️ Erros comuns & soluções rápidas
-
-- **Invalid src prop (next/image)**: adicione o domínio em `next.config.js`.
-- **Auth session missing!**: verifique se a chamada que requer autent está usando o token correto (ou rode via server usando `service_role` para operações administrativas).
-- **new row violates row-level security policy**: revise as policies RLS no Supabase e garanta que o usuário autenticado esteja passando o token correto. Para desenvolvimento, você pode usar `service_role` em rotas server-side ao inserir dados, mas nunca exponha a chave no cliente.
-
----
-
-## 🚀 Deploy
-
-**Vercel (recomendado para Next.js)**
-
-- Conecte o repo no Vercel (Import Project).
-- Adicione as variáveis de ambiente no dashboard do Vercel (anon key, service role — service role só para server).
-- Deploy automático por push ao repositório.
-
-> Observação: Vercel **não** roda containers Docker. Se quiser usar container, prefira Fly/Render/DigitalOcean.
-
----
-
-## Estrutura de pastas (resumo)
-
 ```
 src/
   app/
@@ -157,12 +133,3 @@ src/
   styles/
 next.config.js
 ```
-
----
-
-## Próximos passos que eu posso ajudar
-
-- gerar um `Dockerfile` e `docker-compose.yml` para rodar Next + Supabase localmente;
-- ou preparar as instruções passo-a-passo para publicar no **Vercel** (incluir env vars corretamente).
-
-Qual prefere que eu gere agora?
