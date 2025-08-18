@@ -39,8 +39,8 @@ export default function JobsPage() {
     'All others',
   ];
 
-  const limit = searchParams?.get('limit') ?? 15;
-  const itemsPerPage = 5;
+  const limit = searchParams?.get('limit') ?? 50;
+  const itemsPerPage = 10;
 
   const [, setIsMobileValue] = useState(isMobile());
   const [initialized, setInitialized] = useState(false);
