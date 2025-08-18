@@ -26,14 +26,14 @@ O objetivo é oferecer uma interface simples e rápida para quem busca vagas rem
 
 **Back-end / Infra:**
 
-- Supabase (Auth + Postgres para favoritos)
+- Supabase
 - API interna (`/api/jobs`)
 
 ---
 
 ## 🧑‍💻 Sobre o Desenvolvimento
 
-Realizei o desenvolvimento da aplicação inteira em Next.js: componentes principais, integrações com Supabase e rotas de API que consomem Remotive. O projeto foca em experiência de busca, filtros e persistência de favoritos por usuário.
+Realizei o desenvolvimento da aplicação inteira em Next.js: componentes principais, integrações com Supabase e rotas de API que consomem Remotive. O projeto foca em experiência de busca, filtros e persistência de favoritos por usuário.<br>
 Este projeto também foi criado como exercício/prático para consolidar e treinar o uso das ferramentas: Next.js, Supabase, TailwindCSS e shadcn/ui.
 
 ## 🚀 Como Executar Localmente
@@ -68,12 +68,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 # Supabase (Cloud recomendado)
 NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-
-# Service role (APENAS para uso server-side; não expor ao cliente)
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 ```
-
-Se for usar Supabase local ajuste `NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321` e as chaves geradas localmente.
 
 ### 4 — Configurar `next/image` (domínios externos)
 
@@ -111,6 +106,67 @@ supabase start
 - Crie as tabelas e policies (psql ou migrations). Tabelas importantes:
   - `jobs` (id uuid, created_at, company_name, title, category, job_id int4)
   - `favorites` (id uuid, created_at, user_id uuid FK, job_id uuid FK)
+
+---
+
+## 🔧 Banco de Dados (Supabase)
+
+É **necessário criar um projeto no [Supabase](https://supabase.com/)** para rodar o app.  
+Dentro dele, configure as tabelas e policies abaixo:
+
+### Criação das tabelas
+
+```sql
+-- Tabela de jobs
+create table if not exists jobs (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz default now(),
+  company_name text not null,
+  title text not null,
+  category text not null,
+  job_id int4 not null
+);
+
+-- Tabela de favoritos
+create table if not exists favorites (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz default now(),
+  user_id uuid references auth.users(id) on delete cascade,
+  job_id uuid references jobs(id) on delete cascade
+);
+```
+
+### Policies (RLS)
+
+Ative o **Row Level Security (RLS)** nas tabelas e adicione estas policies:
+
+```sql
+-- Para tabela jobs (somente leitura)
+alter table jobs enable row level security;
+
+create policy "Allow read access to jobs"
+  on jobs
+  for select
+  using (true);
+
+-- Para tabela favorites (cada user só pode ver/editar seus favoritos)
+alter table favorites enable row level security;
+
+create policy "Users can view their own favorites"
+  on favorites
+  for select
+  using (auth.uid() = user_id);
+
+create policy "Users can insert their own favorites"
+  on favorites
+  for insert
+  with check (auth.uid() = user_id);
+
+create policy "Users can delete their own favorites"
+  on favorites
+  for delete
+  using (auth.uid() = user_id);
+```
 
 ---
 
