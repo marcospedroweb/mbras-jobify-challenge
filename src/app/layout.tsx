@@ -34,6 +34,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  console.log('SUPA_URL:', process.env.NEXT_PUBLIC_SUPABASE_URL);
+
   return (
     <html lang="pt-BR" suppressHydrationWarning className="h-screen">
       <head>

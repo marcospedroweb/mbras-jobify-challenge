@@ -77,6 +77,7 @@ export async function POST(req: Request) {
     const user = result.data.user;
     const userError = result.error;
 
+
     if (userError || !user) {
       console.error('Erro de autenticação:', userError);
       return NextResponse.json(
