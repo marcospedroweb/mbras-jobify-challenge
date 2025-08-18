@@ -91,24 +91,6 @@ npm run dev
 
 ---
 
-## 🔧 Rodando Supabase local (opcional)
-
-Se quiser testar RLS e policies localmente:
-
-- Instale a CLI do Supabase (siga a documentação oficial).
-- Inicie os serviços:
-
-```bash
-supabase start
-```
-
-- Pegue as chaves com `supabase status` e coloque no `.env.local`.
-- Crie as tabelas e policies (psql ou migrations). Tabelas importantes:
-  - `jobs` (id uuid, created_at, company_name, title, category, job_id int4)
-  - `favorites` (id uuid, created_at, user_id uuid FK, job_id uuid FK)
-
----
-
 ## 🔧 Banco de Dados (Supabase)
 
 É **necessário criar um projeto no [Supabase](https://supabase.com/)** para rodar o app.  
